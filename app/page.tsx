@@ -33,9 +33,17 @@ export default function Dashboard() {
   }, [])
 
   const fetchLinks = async () => {
-    const res = await fetch('/api/links')
-    const data = await res.json()
-    setLinks(data)
+    try {
+      const res = await fetch('/api/links')
+      const data = await res.json()
+      if (Array.isArray(data)) {
+        setLinks(data)
+      } else {
+        setLinks([])
+      }
+    } catch {
+      setLinks([])
+    }
   }
 
   const createLink = async (e: React.FormEvent) => {
